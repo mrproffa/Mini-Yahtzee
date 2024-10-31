@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Keyboard } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import styles from '../style/style';
 
 const NBR_OF_DICES = 5;
@@ -16,7 +15,7 @@ export default function Home({ navigation }) {
 
   const handleStartGame = () => {
     Keyboard.dismiss();
-    setShowRules(true); // Näytä säännöt, kun nimi on syötetty
+    setShowRules(true); // Näytetään peliohjeet nimen syöttämisen jälkeen
   };
 
   const navigateToGameboard = () => {
@@ -25,17 +24,19 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Enter your name:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={playerName}
-        onChangeText={setPlayerName}
-        onSubmitEditing={handleStartGame}
-      />
-      <Button title="OK" onPress={handleStartGame} />
-
-      {showRules && (
+      {!showRules ? (
+        <>
+          <Text>Enter your name:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            value={playerName}
+            onChangeText={setPlayerName}
+            onSubmitEditing={handleStartGame}
+          />
+          <Button title="OK" onPress={handleStartGame} />
+        </>
+      ) : (
         <>
           <Text style={styles.gameinfo}>Rules of the game</Text>
           <Text>
@@ -51,6 +52,7 @@ export default function Home({ navigation }) {
           <Text>
             GOAL: Achieve as many points as possible. Reaching {BONUS_POINTS_LIMIT} points grants a bonus of {BONUS_POINTS} extra points.
           </Text>
+          <Text style={styles.gameinfo}>Good luck, {playerName}!</Text>
           <Button title="Play" onPress={navigateToGameboard} />
         </>
       )}
